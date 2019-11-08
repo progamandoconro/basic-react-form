@@ -1,14 +1,20 @@
 import React from "react";
+import firebase from 'firebase'
+import FIREBASE_CONFIG from './config'
+
+firebase.initializeApp(FIREBASE_CONFIG)
+
+
 
 export default class Form extends React.Component {
   state = {
-    firstName: "",
-    lastName: "",
-    username: "",
     email: "",
     password: ""
   };
 
+ singIn = (email, password) => {
+   firebase.auth().signInWithEmailAndPassword(email,password)
+ }
   change = e => {
     this.props.onChange({ [e.target.name]: e.target.value });
     this.setState({
@@ -20,16 +26,10 @@ export default class Form extends React.Component {
     e.preventDefault();
     // this.props.onSubmit(this.state);
     this.setState({
-      firstName: "",
-      lastName: "",
-      username: "",
       email: "",
       password: ""
     });
     this.props.onChange({
-      firstName: "",
-      lastName: "",
-      username: "",
       email: "",
       password: ""
     });
@@ -38,26 +38,7 @@ export default class Form extends React.Component {
   render() {
     return (
       <form>
-        <input
-          name="firstName"
-          placeholder="First name"
-          value={this.state.firstName}
-          onChange={e => this.change(e)}
-        />
-        <br />
-        <input
-          name="lastName"
-          placeholder="Last name"
-          value={this.state.lastName}
-          onChange={e => this.change(e)}
-        />
-        <br />
-        <input
-          name="username"
-          placeholder="Username"
-          value={this.state.username}
-          onChange={e => this.change(e)}
-        />
+       
         <br />
         <input
           name="email"
@@ -74,7 +55,7 @@ export default class Form extends React.Component {
           onChange={e => this.change(e)}
         />
         <br />
-        <button onClick={e => this.onSubmit(e)}>Submit</button>
+        <button onClick={this.singIn(this.state.email,this.state.password)}>Entrar</button>
       </form>
     );
   }
